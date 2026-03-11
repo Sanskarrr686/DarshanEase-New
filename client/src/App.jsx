@@ -1,35 +1,49 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./Components/Home";
+import Navbar from "./Components/Navbar";
+
+// Admin
+import Ahome from "./Admin/Ahome";
+import Alogin from "./Admin/Alogin";
+import Asignup from "./Admin/Asignup";
+
+// Organizer
+import Ohome from "./Organizer/Ohome";
+import Ologin from "./Organizer/Ologin";
+import Osignup from "./Organizer/Osignup";
+
+// User
+import Ulogin from "./Users/ulogin";
+import Usignup from "./Users/usignup";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <Navbar />
+
+      <Routes>
+
+        {/* Public */}
+        <Route path="/" element={<Home />} />
+
+        {/* User */}
+        <Route path="/ulogin" element={<Ulogin />} />
+        <Route path="/usignup" element={<Usignup />} />
+
+        {/* Admin */}
+        <Route path="/admin/login" element={<Alogin />} />
+        <Route path="/admin/signup" element={<Asignup />} />
+        <Route path="/admin/home" element={<Ahome />} />
+
+        {/* Organizer */}
+        <Route path="/organizer/login" element={<Ologin />} />
+        <Route path="/organizer/signup" element={<Osignup />} />
+        <Route path="/organizer/home" element={<Ohome />} />
+
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
