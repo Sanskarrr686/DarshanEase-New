@@ -150,15 +150,16 @@ const Utemples = () => {
                 <strong>
                   <p className="text-center">Timings</p>
                 </strong>
-                <p className="text-gray-900 mb-0" style={{display:"flex", justifyContent:"space-between"}}>
-                <p>  <strong>Open: </strong>
-                  {item.open} AM  
-                   </p>
-                 <p>
-                 <strong >Close: </strong>
-                  {item.close} PM
-                 </p>
-                </p>
+                  <div className="text-gray-900 mb-2" style={{display:"flex", justifyContent:"space-between"}}>
+                    <span>
+                      <strong>Open: </strong>
+                      {item.open} AM
+                    </span>
+                    <span>
+                      <strong>Close: </strong>
+                      {item.close} PM
+                    </span>
+                  </div>
                 <p className="text-gray-900 mb-2">
                   <strong>Location:</strong> {item.location}
                 </p>

@@ -14,7 +14,7 @@ const Ologin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let payload = { email, password };
+    let payload = { email: email.trim().toLowerCase(), password };
     axios
       .post("http://localhost:7000/organizer/ologin", payload)
       .then((res) => {
@@ -22,18 +22,22 @@ const Ologin = () => {
         if (res.data.Status === "Success") {
           console.log(res.data.user);
           localStorage.setItem('user', JSON.stringify(res.data.user));
-            navigate('/ohome')
-           alert("login successful")
+          localStorage.setItem('organizerToken', res.data.token);
+          navigate('/organizer/home');
+          alert("login successful");
         } else {
-          alert("wrong credentials");
+          alert(res.data.message || "wrong credentials");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err.response?.data || err);
+        alert(err.response?.data?.message || "Login failed. Please try again.");
+      });
   };
 
   let formHandle1 = (e) => {
     e.preventDefault();
-    navigate("/osignup");
+    navigate("/organizer/signup");
   };
 
   return (

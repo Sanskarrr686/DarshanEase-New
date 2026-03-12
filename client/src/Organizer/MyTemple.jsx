@@ -80,7 +80,6 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FaTrash } from 'react-icons/fa';
 import Onavbar from './Onavbar';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
@@ -109,7 +108,7 @@ const Mytemple = () => {
 
   const deleteItem = (id) => {
     axios.delete(`http://localhost:7000/eventdelete/${id}`);
-    window.location.assign('/myevents');
+    window.location.assign('/organizer/mytemple');
     alert('Temple is deleted');
   };
 
@@ -121,14 +120,13 @@ const Mytemple = () => {
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
           {items.length > 0 ? (
             <Button style={{ backgroundColor: 'lightslategray', border: 'none' }}>
-                <Link to={`/edittemple/${items[0]._id}`} style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
+              <Link to={`/organizer/edittemple/${items[0]._id}`} style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
                 Edit Temple
               </Link>
-              
             </Button>
           ) : (
             <Button style={{ backgroundColor: 'lightslategray', border: 'none' }}>
-              <Link to="/createtemple" style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
+              <Link to="/organizer/createtemple" style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
                 Create Temple
               </Link>
             </Button>

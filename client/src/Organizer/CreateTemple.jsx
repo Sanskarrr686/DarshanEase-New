@@ -49,7 +49,7 @@ function CreateTemple() {
       await axios.post('http://localhost:7000/organizer/createtemple', formDataToSend);
       alert('Temple added successfully');
       console.log("temple created")
-      navigate('/mytemple');
+      navigate('/organizer/mytemple');
     } catch (error) {
       console.error('Error adding temple : ', error);
     }
