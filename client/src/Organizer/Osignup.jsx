@@ -19,7 +19,7 @@ const Osignup = () => {
       .then((result) =>{
         alert('Account created')
         console.log(result)
-        navigate('/ologin')
+        navigate('/organizer/login')
       })
       .catch((err) => {
         console.log(err);
@@ -29,7 +29,7 @@ const Osignup = () => {
 
   let formHandle1 = (e) => {
     e.preventDefault();
-    navigate("/ologin");
+    navigate("/organizer/login");
   };
 
   return (

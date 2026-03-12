@@ -57,7 +57,7 @@ function EditTemple() {
     
           await axios.put(`http://localhost:7000/organizer/updatetemple/${id}`, formDataToSend);
           alert('Temple updated successfully');
-          navigate('/mytemple');
+          navigate('/organizer/mytemple');
         } catch (error) {
           console.error('Error updating temple : ', error);
         }

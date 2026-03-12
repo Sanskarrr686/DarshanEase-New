@@ -8,14 +8,15 @@ import 'moment-timezone';
 
 function CreatedDarshan() {
   const [items, setItems] = useState([]);
-  const [formData, setFormData] = useState({  
+  const [formData, setFormData] = useState({
     description: '',
     darshanName: '',
     open: '',
     close: '',
+    slots: '',
     prices: {
-          normal:'',
-          vip:'',
+      normal: '',
+      vip: '',
     },
   });
   const { id } = useParams();
@@ -85,7 +86,7 @@ function CreatedDarshan() {
       await axios.post('http://localhost:7000/organizer/createdarshan', formDataToSend);
       alert('darshan added successfully');
       console.log("Darshan created");
-      navigate('/odarshans');
+      navigate('/organizer/darshans');
     } catch (error) {
       console.error('Error adding temple: ', error);
     }
@@ -149,6 +150,19 @@ function CreatedDarshan() {
                   style={{ width: '230px' }}
                 />
               </div>
+            </div>
+            <div className="mb-4">
+              <label className="block text-black-900 text-center">Available Slots</label>
+              <input
+                type="number"
+                min="0"
+                name="slots"
+                placeholder="Available Slots"
+                value={formData.slots}
+                onChange={handleChange}
+                className="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                required
+              />
             </div>
             <label className="block text-black-900 text-center">Prices</label>
             <div className="mb-4" style={{ display: 'flex', justifyContent: 'space-around' }}>

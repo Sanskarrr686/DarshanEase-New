@@ -77,20 +77,25 @@ const NavBar = () => {
 </Link>
 </p>
 
-<div className='p6'>
-  <div className='dropdown'>
-    <button className='dropbtn' onClick={toggleDropdown}>
-      Login
-    </button>
-    {isDropdownOpen && (
-      <div className='dropdown-content'>
-        <RouterLink to='/ulogin'>User</RouterLink>
-        <RouterLink to='/organizer/login'>Organizer</RouterLink>
-        <RouterLink to='/admin/login'>Admin</RouterLink>
-      </div>
-    )}
-  </div>
-</div>
+        <div className='p6'>
+          <div className='dropdown'>
+            <button className='dropbtn' onClick={toggleDropdown}>
+              Login
+            </button>
+            {isDropdownOpen && (
+              <div className='dropdown-content'>
+                <RouterLink to='/ulogin'>User</RouterLink>
+                <RouterLink to='/organizer/login'>Organizer</RouterLink>
+                <RouterLink to='/admin/login'>Admin</RouterLink>
+              </div>
+            )}
+          </div>
+        </div>
+        <p className='p7'>
+          <RouterLink to='/signup' style={{ color: 'white' }}>
+            Signup
+          </RouterLink>
+        </p>
 
         </nav>
       </div>

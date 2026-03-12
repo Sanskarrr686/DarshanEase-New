@@ -1,25 +1,13 @@
 const Darshan = require("../models/Darshan");
 
-exports.getDarshanSlots = async (req, res) => {
-
-  const slots = await Darshan.find({ temple: req.params.templeId });
-
-  res.json(slots);
-
-};
-
-exports.createDarshan = async (req, res) => {
-
-  const darshan = await Darshan.create(req.body);
-
-  res.json(darshan);
-
-};
-
-exports.deleteDarshan = async (req, res) => {
-
-  await Darshan.findByIdAndDelete(req.params.id);
-
-  res.json({ message: "Slot removed" });
-
+exports.getDarshanDetails = async (req, res) => {
+  try {
+    const darshan = await Darshan.findById(req.params.id).populate("temple");
+    if (!darshan) {
+      return res.status(404).json({ message: "Darshan not found" });
+    }
+    res.json(darshan);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };

@@ -30,7 +30,7 @@ const Odarshans = () => {
 
   const deleteItem = (id) => {
     axios.delete(`http://localhost:7000/eventdelete/${id}`);
-    window.location.assign('/myevents');
+    window.location.assign('/organizer/darshans');
     alert('Temple is deleted');
   };
 
@@ -42,7 +42,7 @@ const Odarshans = () => {
         <div style={{ display: 'flex', justifyContent: 'flex-end', marginRight: '20px' }}>
          
             <Button style={{ backgroundColor: 'lightslategray', border: 'none' }}>
-              <Link to="/createdarshan" style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
+              <Link to="/organizer/createdarshan" style={{ color: 'white', textDecoration: 'none' }} className="editTempleLink">
                 Create Darshan
               </Link>
             </Button>

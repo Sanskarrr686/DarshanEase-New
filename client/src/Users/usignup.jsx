@@ -15,15 +15,18 @@ const Usignup = () => {
     let payload = { name, email, password };
 
     axios
-      .post("http://localhost:7000/user/usignup", payload)
-      .then((result) =>{
-        alert('Account created')
-        console.log(result)
-        navigate('/ulogin')
+      .post("http://localhost:7000/api/user/register", payload)
+      .then((result) => {
+        if (result.data.Status === "Success") {
+          alert('Account created');
+          navigate('/ulogin');
+        } else {
+          alert(result.data.message || "Failed to create an account");
+        }
       })
       .catch((err) => {
         console.log(err);
-        alert("Failed to create an account");
+        alert(err.response?.data?.message || "Failed to create an account");
       });
   };
 
@@ -57,7 +60,8 @@ const Usignup = () => {
             </label>
             <input
               name="name"
-              type="name"
+              type="text"
+              required
               autoComplete="email"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -72,6 +76,7 @@ const Usignup = () => {
             <input
               name="email"
               type="email"
+              required
               autoComplete="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}

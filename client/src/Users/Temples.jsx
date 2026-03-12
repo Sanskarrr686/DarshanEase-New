@@ -1,112 +1,119 @@
-import React, { useState,useEffect } from 'react'
-import '../Components/navbar.css'
-
-import Card from 'react-bootstrap/Card';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
+import '../Components/navbar.css';
 
-
-const TempleCard = ({ imageSrc, title, description }) => {
-
-    const [isHovered, setIsHovered] = useState(false);
-  
-    const handleMouseOver = () => {
-      setIsHovered(true);
-    };
-  
-    const handleMouseOut = () => {
-      setIsHovered(false);
-    };
-  
-    return (
-      <Card  style={{width:"25rem"}} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
-        {isHovered ? (
-          <Card.Body>
-            <Card.Text>
-              <strong style={{ color: 'orange' }}>Advance Darshan</strong> <br /> <br />
-              <strong>{title}</strong> <br /> <br />
-              <p>{description}</p>
-            </Card.Text>
-          </Card.Body>
-        ) : (
-          <div>
-           
-            
-            <Card.Img variant="top" src={imageSrc} alt={title}  style={{width:"500px",height:"200px"}}  />
-           
-          
-          </div>
-        )}
-      </Card>
-    );
-  };
-  
-
-
-
+const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:7000';
 
 const Temples = () => {
-    const settings = {
-        fade: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        autoplay: true,        // Enable autoplay
-        autoplaySpeed: 2000, 
-        arrows:false
-      };
+  const [darshans, setDarshans] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    const fetchDarshans = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(`${API_BASE}/organizer/getdarshans`);
+        setDarshans(response.data || []);
+      } catch (err) {
+        setError(err.response?.data?.message || 'Unable to load darshan slots right now.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDarshans();
+  }, []);
 
   return (
-  
-    <div className='content' style={{backgroundColor:"whitesmoke",paddingBottom:"50px",paddingTop:"20px"}} id='temples'>   
-  
+    <section
+      className="content"
+      style={{ backgroundColor: 'whitesmoke', paddingBottom: '50px', paddingTop: '20px' }}
+      id="temples"
+    >
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 16px' }}>
+        <h1 className="text-center mb-6">Temples & Darshan Slots</h1>
+        {loading ? (
+          <p className="text-center">Loading available slots...</p>
+        ) : error ? (
+          <p className="text-center text-red-600">{error}</p>
+        ) : darshans.length === 0 ? (
+          <p className="text-center">No darshan slots are available right now.</p>
+        ) : (
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gap: '24px',
+            }}
+          >
+            {darshans.map((slot) => {
+              const imageUrl = slot.templeImage
+                ? `${API_BASE}/organizer/${slot.templeImage}`
+                : 'https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1300&q=80';
+              const availableSlots = typeof slot.slots === 'number' ? slot.slots : null;
+              const isSoldOut = availableSlots !== null && availableSlots <= 0;
 
-      <h1 className='text-center'>Temples</h1>
-      <Link  to='/utemples' style={{textDecoration:"none"}}>
-      <div style={{display:"flex", justifyContent:"space-around"}}>
-      <TempleCard 
-        imageSrc="https://d3k1i85mml78tf.cloudfront.net/Blogs/1677258515580_post_image_1.jpg" 
-        title="Shri Thakur Banke Bihari Ji Mandir"
-        description="to Register Shri Thakur Banke Bihari Ji Mandir Online Darshan Booking"
-        linkTo="/ulogin"
-      />
-      <TempleCard
-        imageSrc="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Shiv_khori_2.jpg/1200px-Shiv_khori_2.jpg"
-        title="Shiv Khori Mandir"
-        description="Click here to Register Shiv Khori Mandir Online Darshan Booking"
-       
-      />
-      <TempleCard
-        imageSrc="https://upload.wikimedia.org/wikipedia/commons/4/4e/Tirumala_090615.jpg"
-        title="Tirupati Tirumala Temple"
-        description="Click here to Register Tirupati Tirumala Temple Online Darshan Booking"
-      />  </div>
-      <br/> 
-      <div style={{display:"flex", justifyContent:"space-around"}}>
-      <TempleCard 
-        imageSrc="https://imageio.forbes.com/blogs-images/jimdobson/files/2016/05/Sree_Padmanabhaswamy_Temple.jpg?height=459&width=711&fit=bounds" 
-        title="Padmanabaswamy Temple"
-        description="Click here to Register Padmanabaswamy Temple Online Darshan Booking"
-      />
-      <TempleCard
-        imageSrc="https://upload.wikimedia.org/wikipedia/commons/e/e4/Sai_baba_samadhi_mandir_.jpg"
-        title="Shirdi Sai Baba Mandir"
-        description="Click here to Register Shirdi Sai Baba Mandir Online Darshan Booking"
-      />
-      <TempleCard
-        imageSrc="https://upload.wikimedia.org/wikipedia/commons/9/94/The_Golden_Temple_of_Amrithsar_7.jpg"
-        title="Golden Temple"
-        description="Click here to Register Golden Temple Online Darshan Booking"
-      />   
-    </div>
-    </Link>
-    </div>
-    
-    
-    
-  )
-}
+              return (
+                <div
+                  key={slot._id}
+                  style={{
+                    borderRadius: '18px',
+                    overflow: 'hidden',
+                    background: '#fff',
+                    boxShadow: '0 15px 35px rgba(15,23,42,0.12)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <div style={{ height: '200px', overflow: 'hidden' }}>
+                    <img
+                      src={imageUrl}
+                      alt={slot.templeName}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  </div>
+                  <div style={{ padding: '20px', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                    <h3 style={{ margin: 0, fontSize: '1.2rem' }}>{slot.templeName}</h3>
+                    <p style={{ margin: '8px 0 4px', color: '#475569' }}>{slot.location}</p>
+                    <p style={{ margin: 0, fontWeight: '600' }}>{slot.darshanName}</p>
+                    <p style={{ margin: '6px 0' }}>
+                      {slot.open} - {slot.close}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span>Normal: INR {slot.prices?.normal ?? 0}</span>
+                      <span>VIP: INR {slot.prices?.vip ?? 0}</span>
+                    </div>
+                    <p style={{ margin: '8px 0', color: isSoldOut ? '#dc2626' : '#16a34a', fontWeight: '600' }}>
+                      {isSoldOut ? 'Sold out' : `Slots left: ${availableSlots ?? 'Unlimited'}`}
+                    </p>
+                    <div style={{ marginTop: 'auto' }}>
+                      <Link
+                        to={`/bookdarshan/${slot._id}`}
+                        style={{
+                          padding: '10px 16px',
+                          borderRadius: '10px',
+                          background: isSoldOut ? '#9ca3af' : '#2563eb',
+                          color: '#fff',
+                          textDecoration: 'none',
+                          textAlign: 'center',
+                          display: 'inline-block',
+                        }}
+                        aria-disabled={isSoldOut}
+                      >
+                        {isSoldOut ? 'Sold out' : 'Book Slot'}
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+};
 
-export default Temples
-
-
+export default Temples;
